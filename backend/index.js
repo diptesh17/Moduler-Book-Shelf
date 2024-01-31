@@ -43,6 +43,14 @@ app.get("/books", async (req, res) => {
     data: response,
   });
 });
+
+app.get("/books/:id", async (req, res) => {
+  const { id } = req.params;
+  const response = await Book.findById(id);
+  return res.status(500).json({
+    data: response,
+  });
+});
 app.listen(PORT, () => {
   console.log(`Server started on Port : ${PORT}`);
 });

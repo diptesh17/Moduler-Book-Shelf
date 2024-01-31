@@ -37,19 +37,51 @@ app.post("/books", async (req, res) => {
 });
 
 app.get("/books", async (req, res) => {
-  const response = await Book.find({});
-  return res.status(500).json({
-    count: response.length,
-    data: response,
-  });
+  try {
+    const response = await Book.find({});
+    return res.status(500).json({
+      count: response.length,
+      data: response,
+    });
+  } catch (error) {
+    console.log("Error : not get all book");
+  }
 });
 
 app.get("/books/:id", async (req, res) => {
-  const { id } = req.params;
-  const response = await Book.findById(id);
-  return res.status(500).json({
-    data: response,
-  });
+  try {
+    const { id } = req.params;
+    const response = await Book.findById(id);
+    return res.status(500).json({
+      data: response,
+    });
+  } catch (error) {
+    console.log("Not able to get a book");
+  }
+});
+
+app.put("/books/:id", async (req, res) => {
+  try {
+    if (!req.body.title || !req.body.author || !req.body.publishYear) {
+      return res.status(400).send({
+        message: "Send all the required fields",
+      });
+    }
+
+    const { id } = req.params;
+
+    const result = await Book.findByIdAndUpdate(id, req.body);
+
+    if (!result) {
+      return res.status(404).send({
+        message: "Book not found",
+      });
+    }
+
+    return res.status(200).send({
+      message: "Book is successfully updated",
+    });
+  } catch (error) {}
 });
 app.listen(PORT, () => {
   console.log(`Server started on Port : ${PORT}`);

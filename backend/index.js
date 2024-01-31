@@ -38,7 +38,10 @@ app.post("/books", async (req, res) => {
 
 app.get("/books", async (req, res) => {
   const response = await Book.find({});
-  return res.status(500).json(response);
+  return res.status(500).json({
+    count: response.length,
+    data: response,
+  });
 });
 app.listen(PORT, () => {
   console.log(`Server started on Port : ${PORT}`);

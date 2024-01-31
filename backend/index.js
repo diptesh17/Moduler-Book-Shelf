@@ -7,7 +7,11 @@ require("dotenv").config();
 
 const PORT = process.env.PORT || 4000;
 
+// Middleware : parsing body request
 app.use(express.json());
+
+// Middleware : CORS policy
+app.use(cors());
 
 app.use("/books", Bookroutes);
 
